@@ -7,30 +7,24 @@ services:
       - "8080:8080"
     environment:
       # Required configuration
-      - GOCOMMENDER_PLEX_URL=${PLEX_URL}
-      - GOCOMMENDER_PLEX_TOKEN=${PLEX_TOKEN}
-      - GOCOMMENDER_OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PLEX_URL=${PLEX_URL}
+      - PLEX_TOKEN=${PLEX_TOKEN}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       
       # Optional API keys
-      - GOCOMMENDER_DISCOGS_TOKEN=${DISCOGS_TOKEN:-}
-      - GOCOMMENDER_LASTFM_API_KEY=${LASTFM_API_KEY:-}
+      - DISCOGS_TOKEN=${DISCOGS_TOKEN:-}
+      - LASTFM_API_KEY=${LASTFM_API_KEY:-}
       
       # Server configuration
-      - GOCOMMENDER_SERVER_HOST=0.0.0.0
-      - GOCOMMENDER_SERVER_PORT=8080
-      - GOCOMMENDER_DATABASE_PATH=/app/data/gocommender.db
-      
-      # Logging
-      - GOCOMMENDER_LOG_LEVEL=info
+      - HOST=0.0.0.0
+      - PORT=8080
+      - DATABASE_PATH=/app/data/gocommender.db
     volumes:
-      - gocommender_data:/app/data
+      - ./data:/app/data:Z
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
-volumes:
-  gocommender_data:

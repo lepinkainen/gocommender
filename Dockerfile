@@ -48,7 +48,7 @@ RUN addgroup -g 1001 -S gocommender && \
 WORKDIR /app
 
 # Create data directory
-RUN mkdir -p /data && chown gocommender:gocommender /data
+RUN mkdir -p /app/data && chown gocommender:gocommender /app/data
 
 # Copy binary from builder stage
 COPY --from=builder /app/gocommender .
@@ -56,8 +56,7 @@ COPY --from=builder /app/gocommender .
 # Copy prompts directory
 COPY --from=builder /app/prompts ./prompts
 
-# Copy configuration files
-COPY --from=builder /app/.env.example .
+# Note: Configuration is provided via environment variables at runtime
 
 # Change ownership
 RUN chown -R gocommender:gocommender /app

@@ -40,3 +40,6 @@ build/
 *.db
 *.sqlite
 *.sqlite3
+
+# Data directory (contains database files)
+data/

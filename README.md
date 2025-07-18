@@ -24,7 +24,7 @@ A Go rewrite of PlexCommender - a music discovery backend that integrates Plex, 
      --name gocommender \
      -p 8080:8080 \
      --env-file .env \
-     -v gocommender-data:/data \
+     -v ./data:/app/data:Z \
      ghcr.io/your-username/gocommender:latest
    ```
 
@@ -106,7 +106,7 @@ docker run -d \
   -e PLEX_URL=http://your-plex-server:32400 \
   -e PLEX_TOKEN=your_plex_token \
   -e OPENAI_API_KEY=your_openai_key \
-  -v gocommender-data:/data \
+  -v ./data:/app/data:Z \
   ghcr.io/your-username/gocommender:latest
 
 # With all optional APIs
@@ -118,7 +118,7 @@ docker run -d \
   -e OPENAI_API_KEY=your_openai_key \
   -e DISCOGS_TOKEN=your_discogs_token \
   -e LASTFM_API_KEY=your_lastfm_key \
-  -v gocommender-data:/data \
+  -v ./data:/app/data:Z \
   ghcr.io/your-username/gocommender:latest
 ```
 
@@ -137,7 +137,7 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - DISCOGS_TOKEN=${DISCOGS_TOKEN}
       - LASTFM_API_KEY=${LASTFM_API_KEY}
-      - GOCOMMENDER_DATABASE_PATH=/data/gocommender.db
+      - DATABASE_PATH=/data/gocommender.db
     volumes:
       - gocommender-data:/data
     restart: unless-stopped
@@ -147,8 +147,7 @@ services:
       timeout: 10s
       retries: 3
 
-volumes:
-  gocommender-data:
+# Note: Using bind mount ./data:/app/data:Z instead of named volume
 ```
 
 #### Kubernetes Deployment
