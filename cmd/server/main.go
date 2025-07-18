@@ -1,13 +1,15 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 
+	"gocommender/internal/api"
 	"gocommender/internal/config"
+	"gocommender/internal/db"
+	"gocommender/internal/services"
 )
 
 func main() {
@@ -30,40 +32,53 @@ func main() {
 	}
 
 	// Initialize database
-	db, err := config.InitDatabase(cfg.Database.Path)
+	database, err := config.InitDatabase(cfg.Database.Path)
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	defer db.Close()
+	defer database.Close()
 
 	if *initDBOnly {
 		fmt.Println("✅ Database initialized successfully")
 		return
 	}
 
-	// Set up HTTP routes
-	http.HandleFunc("/api/health", healthHandler(db))
-
-	addr := fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port)
-	log.Printf("🚀 GoCommender server starting on %s", addr)
-
-	if err := http.ListenAndServe(addr, nil); err != nil {
-		log.Fatal("Server failed to start:", err)
+	// Initialize services
+	cacheManager := db.NewCacheManager(database)
+	enrichmentService := services.NewEnrichmentService(
+		cfg.External.DiscogsToken,
+		cfg.External.LastFMAPIKey,
+		"", // Last.fm secret not used
+	)
+	plexClient := services.NewPlexClient(cfg.Plex.URL, cfg.Plex.Token)
+	openaiClient, err := services.NewOpenAIClient(
+		cfg.OpenAI.APIKey,
+		cfg.OpenAI.Model,
+		"prompts/openai_recommendation.tmpl",
+		false, // debug
+	)
+	if err != nil {
+		log.Fatalf("Failed to initialize OpenAI client: %v", err)
 	}
-}
+	recommendationService := services.NewRecommendationService(
+		plexClient,
+		openaiClient,
+		enrichmentService,
+	)
 
-func healthHandler(db *sql.DB) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		// Test database connection
-		if err := db.Ping(); err != nil {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusServiceUnavailable)
-			fmt.Fprintf(w, `{"status":"error","service":"gocommender","error":"database unavailable"}`)
-			return
-		}
+	// Create API server
+	apiServer := api.NewServer(
+		recommendationService,
+		enrichmentService,
+		plexClient,
+		cacheManager,
+	)
 
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, `{"status":"ok","service":"gocommender","database":"connected"}`)
+	// Start HTTP server
+	addr := fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port)
+	log.Printf("🚀 GoCommender API server starting on %s", addr)
+
+	if err := http.ListenAndServe(addr, apiServer); err != nil {
+		log.Fatal("Server failed to start:", err)
 	}
 }

@@ -29,14 +29,35 @@ tasks:
       - go build -o build/gocommender-ci ./cmd/server
 
   test:
-    desc: Run tests
+    desc: Run unit tests (excludes integration tests)
+    cmds:
+      - go test -short -v ./...
+
+  test-ci:
+    desc: Run tests with coverage for CI
+    cmds:
+      - go test -tags=ci -cover -v ./...
+
+  test-integration:
+    desc: Run integration tests
+    cmds:
+      - go test -v -tags=integration ./...
+
+  test-all:
+    desc: Run all tests including integration tests
     cmds:
       - go test -v ./...
 
-  test-ci:
-    desc: Run tests with CI tags and coverage
+  test-coverage:
+    desc: Generate test coverage report
     cmds:
-      - go test -tags=ci -cover -v ./...
+      - go test -coverprofile=coverage.out ./...
+      - go tool cover -html=coverage.out -o coverage.html
+
+  benchmark:
+    desc: Run benchmarks
+    cmds:
+      - go test -bench=. -benchmem ./...
 
   lint:
     desc: Run linter
