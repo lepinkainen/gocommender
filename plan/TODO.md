@@ -2,7 +2,7 @@
 
 ## Quick Status Overview
 
-**✅ COMPLETED (Steps 01-05)**
+**✅ COMPLETED (Steps 01-06)**
 
 - [x] Project setup and structure
 - [x] Data models with SQLite compatibility
@@ -12,17 +12,19 @@
   - [x] Discogs API client for artist descriptions and images
   - [x] Last.fm API client for additional metadata
   - [x] Multi-source artist enrichment service
+- [x] **Caching Layer** 
+  - [x] SQLite operations for artist persistence (`internal/db/artist.go`)
+  - [x] TTL management and cache expiry (`internal/db/cache.go`)
+  - [x] Background refresh mechanisms (`internal/db/refresh.go`)
 
-**🚧 CURRENT FOCUS (Step 06)**
+**🚧 CURRENT FOCUS (Step 07)**
 
-- [ ] **Caching Layer** - Next to implement
-  - [ ] SQLite operations for artist persistence
-  - [ ] TTL management and cache expiry
-  - [ ] Background refresh mechanisms
+- [ ] **Plex Integration** - Next to implement
+  - [ ] XML API client for Plex server communication
+  - [ ] Playlist parsing and track extraction
+  - [ ] Artist metadata extraction from Plex tracks
 
-**📋 REMAINING WORK (Steps 07-13)**
-
-- [ ] **07** - Plex Integration (XML API, playlist parsing, track extraction)
+**📋 REMAINING WORK (Steps 08-13)**
 - [ ] **08** - LLM Client (OpenAI integration for recommendations)
 - [ ] **09** - Recommendation Engine (orchestrate all services)
 - [ ] **10** - HTTP API (REST endpoints, middleware, JSON responses)
@@ -39,15 +41,15 @@
 - Configuration loading with environment variables
 - MusicBrainz client with rate limiting and data transformation
 - External API clients (Discogs, Last.fm) with enrichment service
+- Caching layer with SQLite persistence and TTL management
 
 **🔄 Current Implementation Layer**
 
-- Caching and persistence layer for artist data
-- SQLite operations with TTL management
+- Plex integration for music library access
+- Track extraction and artist metadata parsing
 
 **⏳ Pending Layers**
 
-- Plex library integration
 - LLM recommendation generation
 - HTTP API and web interface
 
@@ -62,9 +64,9 @@
 
 ## Immediate Next Steps
 
-1. **Start Step 06**: Implement SQLite database operations (`internal/db/`)
-2. **Follow with**: Artist persistence with caching logic
-3. **Then**: TTL management and background refresh mechanisms
+1. **Start Step 07**: Implement Plex integration (`internal/services/plex.go`)
+2. **Follow with**: XML API client for Plex server communication
+3. **Then**: Track extraction and artist metadata parsing
 
 ## Quick Commands
 
@@ -83,5 +85,5 @@ task dev                      # Run development server
 
 - All plan files in `plan/01-13_*.md` contain detailed implementation steps
 - Each step includes verification commands and dependency chains
-- External API integration (Step 05) complete with comprehensive tests
-- Ready to proceed with caching layer implementation
+- Caching layer (Step 06) complete with database operations and background refresh
+- Ready to proceed with Plex integration implementation
