@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
 
@@ -33,8 +34,9 @@ type PlexConfig struct {
 
 // OpenAIConfig contains OpenAI API settings
 type OpenAIConfig struct {
-	APIKey string `mapstructure:"api_key"`
-	Model  string `mapstructure:"model"`
+	APIKey             string `mapstructure:"api_key"`
+	Model              string `mapstructure:"model"`
+	PromptTemplatePath string `mapstructure:"prompt_template_path"`
 }
 
 // ExternalConfig contains optional external API configurations
@@ -56,6 +58,11 @@ type CacheConfig struct {
 
 // Load loads configuration from environment variables and files
 func Load() (*Config, error) {
+	// Load .env file if it exists (optional)
+	if err := godotenv.Load(); err != nil {
+		// .env file not found or unreadable - this is ok, continue with env vars
+	}
+
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
@@ -95,6 +102,7 @@ func setDefaults() {
 
 	// OpenAI defaults
 	viper.SetDefault("openai.model", "gpt-4o")
+	viper.SetDefault("openai.prompt_template_path", "./prompts/openai_recommendation.tmpl")
 
 	// Database defaults
 	viper.SetDefault("database.path", "./gocommender.db")
@@ -107,6 +115,7 @@ func setDefaults() {
 	viper.BindEnv("plex.url", "PLEX_URL")
 	viper.BindEnv("plex.token", "PLEX_TOKEN")
 	viper.BindEnv("openai.api_key", "OPENAI_API_KEY")
+	viper.BindEnv("openai.prompt_template_path", "OPENAI_PROMPT_TEMPLATE_PATH")
 	viper.BindEnv("external.discogs_token", "DISCOGS_TOKEN")
 	viper.BindEnv("external.lastfm_api_key", "LASTFM_API_KEY")
 	viper.BindEnv("database.path", "DATABASE_PATH")

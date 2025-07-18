@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/xml"
 	"fmt"
+	"math"
 	"net/http"
 	"net/url"
 	"strings"
@@ -34,11 +35,11 @@ type PlexTrackXML struct {
 	Title            string   `xml:"title,attr"`
 	GrandparentTitle string   `xml:"grandparentTitle,attr"` // Artist
 	ParentTitle      string   `xml:"parentTitle,attr"`      // Album
-	Year             int      `xml:"year,attr"`
-	UserRating       int      `xml:"userRating,attr"` // 1-10 scale
-	ViewCount        int      `xml:"viewCount,attr"`
+	Year             float64  `xml:"year,attr"`
+	UserRating       float64  `xml:"userRating,attr"` // 1-10 scale
+	ViewCount        float64  `xml:"viewCount,attr"`
 	LastViewedAt     int64    `xml:"lastViewedAt,attr"`
-	Duration         int      `xml:"duration,attr"` // milliseconds
+	Duration         float64  `xml:"duration,attr"` // milliseconds
 }
 
 // PlexArtistXML represents an artist from Plex API
@@ -216,9 +217,9 @@ func (c *PlexClient) GetPlaylistTracks(playlistName string) ([]models.PlexTrack,
 			Title:     t.Title,
 			Artist:    t.GrandparentTitle,
 			Album:     t.ParentTitle,
-			Year:      t.Year,
-			Rating:    t.UserRating,
-			PlayCount: t.ViewCount,
+			Year:      int(math.Round(t.Year)),
+			Rating:    int(math.Round(t.UserRating)),
+			PlayCount: int(math.Round(t.ViewCount)),
 		}
 
 		// Convert Unix timestamp to time.Time

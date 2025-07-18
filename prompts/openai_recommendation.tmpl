@@ -1,0 +1,37 @@
+# Music Discovery Task
+
+I need artist recommendations for music discovery. You must suggest ONLY artists I don't already know.
+
+## My High-Rated Tracks (Listening Profile):
+{{range .SeedTracks}}- "{{.Title}}" by {{.Artist}} ({{.Year}}) {{.Stars}}
+{{end}}{{if .HasMoreTracks}}... and {{sub .TotalTrackCount .SeedLimit}} more tracks
+{{end}}
+{{if .Genre}}## Genre Focus: {{.Genre}}
+Please focus recommendations within this genre while maintaining style similarity.
+
+{{end}}## CRITICAL: Artists to EXCLUDE (Already in My Collection):
+DO NOT suggest ANY of these artists - they are already known to me:
+
+{{range .PriorityArtists}}- {{.}}
+{{end}}{{range .OtherArtists}}- {{.}}
+{{end}}{{if .HasMoreArtists}}
+(Showing {{.ExclusionLimit}} of {{.TotalKnownCount}} total known artists - please avoid ALL variations and similar names)
+{{end}}
+## Requirements:
+1. Suggest exactly {{.MaxResults}} artists
+2. Each artist must be COMPLETELY DIFFERENT from my known artists
+3. Artists must be real and have released official albums
+4. Focus on stylistic similarity to my high-rated tracks
+5. Double-check each suggestion against the exclusion list
+6. If unsure about an artist, choose someone else
+
+## Response Format (JSON only):
+```json
+{
+  "suggestions": ["Artist 1", "Artist 2", "Artist 3", ...],
+  "reasoning": "Brief explanation of recommendations",
+  "confidence": 0.85
+}
+```
+
+Remember: The goal is MUSIC DISCOVERY - I want to find NEW artists!
