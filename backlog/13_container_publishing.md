@@ -618,38 +618,38 @@ jobs:
 
 - [ ] **Local Container Build**:
 
-   ```bash
-   docker build -t gocommender:local .
-   docker run -d -p 8080:8080 gocommender:local
-   curl http://localhost:8080/api/info
-   ```
+  ```bash
+  docker build -t gocommender:local .
+  docker run -d -p 8080:8080 gocommender:local
+  curl http://localhost:8080/api/info
+  ```
 
 - [ ] **Push to GHCR (after CI setup)**:
 
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
-   # Check GitHub Actions for build status
-   ```
+  ```bash
+  git tag v1.0.0
+  git push origin v1.0.0
+  # Check GitHub Actions for build status
+  ```
 
 - [ ] **Pull and Test Published Image**:
 
-   ```bash
-   docker pull ghcr.io/your-username/gocommender:latest
-   docker run -d -p 8080:8080 ghcr.io/your-username/gocommender:latest
-   ```
+  ```bash
+  docker pull ghcr.io/your-username/gocommender:latest
+  docker run -d -p 8080:8080 ghcr.io/your-username/gocommender:latest
+  ```
 
 - [ ] **Multi-architecture Verification**:
 
-   ```bash
-   docker manifest inspect ghcr.io/your-username/gocommender:latest
-   ```
+  ```bash
+  docker manifest inspect ghcr.io/your-username/gocommender:latest
+  ```
 
 - [ ] **Security Scan Results**:
 
-   ```bash
-   # Check GitHub Security tab for Trivy scan results
-   ```
+  ```bash
+  # Check GitHub Security tab for Trivy scan results
+  ```
 
 ## Dependencies
 
