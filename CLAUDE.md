@@ -53,6 +53,10 @@ task dev                      # Run development server
 task test                     # Unit tests only
 task test-ci                  # Tests with coverage for CI
 
+# Server modes for debugging
+./build/gocommender -config-test    # Test config loading
+./build/gocommender -init-db-only   # Initialize database only
+
 # Analysis
 go run llm-shared/utils/gofuncs/gofuncs.go -dir .  # Function analysis
 ```
@@ -70,9 +74,9 @@ plan/               # Implementation roadmap with checkboxes
 
 ## Implementation Progress (from plan/)
 
-✅ **Complete**: Project setup, data models, configuration, MusicBrainz integration  
-🚧 **Next**: External APIs (Discogs, Last.fm), caching layer, Plex integration  
-📋 **Future**: LLM client, recommendation engine, HTTP API
+✅ **Complete**: Project setup, data models, configuration, MusicBrainz integration, external APIs (Discogs, Last.fm)  
+🚧 **Current**: Caching layer (SQLite operations, TTL management)  
+📋 **Next**: Plex integration, LLM client, recommendation engine, HTTP API
 
 ## Key Technical Decisions
 
@@ -110,3 +114,5 @@ plan/               # Implementation roadmap with checkboxes
 3. **JSON serialization**: Custom types need `Value()/Scan()` methods for database compatibility
 4. **Configuration**: Environment variables override config files (Viper precedence)
 5. **MBID handling**: Ensure MusicBrainz ID is preserved through all data transformations
+6. **Flag-based testing**: Use `-config-test` and `-init-db-only` flags for debugging server initialization
+7. **User-Agent headers**: All external API clients use "GoCommender/1.0" format for compliance
