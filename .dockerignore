@@ -1,0 +1,39 @@
+# Build artifacts
+build/
+*.exe
+*.so
+*.dylib
+
+# Test files
+*_test.go
+test/
+coverage.out
+
+# Development files
+.git/
+.gitignore
+README.md
+*.md
+backlog/
+plan/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.log

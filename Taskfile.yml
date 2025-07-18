@@ -22,11 +22,19 @@ tasks:
 
   build-ci:
     desc: Build for CI environment
-    deps:
-      - test-ci
-      - lint
     cmds:
       - go build -o build/gocommender-ci ./cmd/server
+
+  build-versioned:
+    desc: Build with version information
+    vars:
+      VERSION: '{{.VERSION | default "dev"}}'
+      COMMIT: '{{.COMMIT | default "unknown"}}'
+      BUILD_DATE: '{{.BUILD_DATE | default "unknown"}}'
+    cmds:
+      - |
+        go build -ldflags="-w -s -X main.Version={{.VERSION}} -X main.Commit={{.COMMIT}} -X main.BuildDate={{.BUILD_DATE}}" \
+        -o build/gocommender-versioned ./cmd/server
 
   test:
     desc: Run unit tests (excludes integration tests)
@@ -36,7 +44,7 @@ tasks:
   test-ci:
     desc: Run tests with coverage for CI
     cmds:
-      - go test -tags=ci -cover -v ./...
+      - go test -tags=ci -cover -coverprofile=coverage.out -v ./...
 
   test-integration:
     desc: Run integration tests

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"runtime"
 
 	"gocommender/internal/api"
 	"gocommender/internal/config"
@@ -12,10 +13,34 @@ import (
 	"gocommender/internal/services"
 )
 
+// Build information (set by ldflags during build)
+var (
+	Version   = "dev"
+	Commit    = "unknown"
+	BuildDate = "unknown"
+)
+
+// BuildInfo contains application build information
+type BuildInfo struct {
+	Version   string `json:"version"`
+	Commit    string `json:"commit"`
+	BuildDate string `json:"build_date"`
+	GoVersion string `json:"go_version"`
+	Platform  string `json:"platform"`
+}
+
 func main() {
-	var configTest = flag.Bool("config-test", false, "Test configuration loading and exit")
-	var initDBOnly = flag.Bool("init-db-only", false, "Initialize database and exit")
+	var (
+		configTest = flag.Bool("config-test", false, "Test configuration loading and exit")
+		initDBOnly = flag.Bool("init-db-only", false, "Initialize database and exit")
+		version    = flag.Bool("version", false, "Show version information and exit")
+	)
 	flag.Parse()
+
+	if *version {
+		showVersion()
+		return
+	}
 
 	// Load configuration
 	cfg, err := config.Load()
@@ -28,6 +53,7 @@ func main() {
 		fmt.Printf("Plex URL: %s\n", cfg.Plex.URL)
 		fmt.Printf("Server: %s:%s\n", cfg.Server.Host, cfg.Server.Port)
 		fmt.Printf("Database: %s\n", cfg.Database.Path)
+		showVersion()
 		return
 	}
 
@@ -66,19 +92,53 @@ func main() {
 		enrichmentService,
 	)
 
+	// Create build info
+	buildInfo := &api.BuildInfo{
+		Version:   Version,
+		Commit:    Commit,
+		BuildDate: BuildDate,
+		GoVersion: runtime.Version(),
+		Platform:  fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+	}
+
 	// Create API server
 	apiServer := api.NewServer(
 		recommendationService,
 		enrichmentService,
 		plexClient,
 		cacheManager,
+		buildInfo,
 	)
 
 	// Start HTTP server
 	addr := fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port)
-	log.Printf("🚀 GoCommender API server starting on %s", addr)
+	log.Printf("🚀 GoCommender v%s starting on %s", Version, addr)
+	log.Printf("📝 Build: %s (%s)", getShortCommit(), BuildDate)
 
 	if err := http.ListenAndServe(addr, apiServer); err != nil {
 		log.Fatal("Server failed to start:", err)
 	}
+}
+
+func showVersion() {
+	build := BuildInfo{
+		Version:   Version,
+		Commit:    Commit,
+		BuildDate: BuildDate,
+		GoVersion: runtime.Version(),
+		Platform:  fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+	}
+
+	fmt.Printf("GoCommender %s\n", build.Version)
+	fmt.Printf("Commit: %s\n", build.Commit)
+	fmt.Printf("Built: %s\n", build.BuildDate)
+	fmt.Printf("Go: %s\n", build.GoVersion)
+	fmt.Printf("Platform: %s\n", build.Platform)
+}
+
+func getShortCommit() string {
+	if len(Commit) > 8 {
+		return Commit[:8]
+	}
+	return Commit
 }

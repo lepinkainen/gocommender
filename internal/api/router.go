@@ -20,13 +20,24 @@ type Server struct {
 	enrichmentService     *services.EnrichmentService
 	plexClient            *services.PlexClient
 	cacheManager          *db.CacheManager
+	buildInfo             *BuildInfo
+}
+
+// BuildInfo contains application build information
+type BuildInfo struct {
+	Version   string `json:"version"`
+	Commit    string `json:"commit"`
+	BuildDate string `json:"build_date"`
+	GoVersion string `json:"go_version"`
+	Platform  string `json:"platform"`
 }
 
 // NewServer creates a new HTTP server with all routes configured
 func NewServer(recommendationService *services.RecommendationService,
 	enrichmentService *services.EnrichmentService,
 	plexClient *services.PlexClient,
-	cacheManager *db.CacheManager) *Server {
+	cacheManager *db.CacheManager,
+	buildInfo *BuildInfo) *Server {
 
 	server := &Server{
 		mux:                   http.NewServeMux(),
@@ -34,6 +45,7 @@ func NewServer(recommendationService *services.RecommendationService,
 		enrichmentService:     enrichmentService,
 		plexClient:            plexClient,
 		cacheManager:          cacheManager,
+		buildInfo:             buildInfo,
 	}
 
 	server.setupRoutes()
@@ -81,7 +93,7 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 		"status":    "ok",
 		"service":   "gocommender",
 		"timestamp": time.Now().UTC(),
-		"version":   "1.0.0",
+		"version":   s.buildInfo.Version,
 	}
 
 	// Test database connection
@@ -304,12 +316,13 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 
 	info := map[string]interface{}{
 		"service":     "GoCommender API",
-		"version":     "1.0.0",
+		"version":     s.buildInfo.Version,
 		"description": "Music discovery backend using Plex, LLMs, and external APIs",
 		"endpoints": map[string]string{
 			"POST /api/recommend":     "Generate artist recommendations",
 			"GET /api/artists/{mbid}": "Get artist information by MusicBrainz ID",
 			"GET /api/health":         "Service health check",
+			"GET /api/info":           "Detailed API and build information",
 			"GET /api/plex/playlists": "List Plex playlists",
 			"GET /api/plex/test":      "Test Plex connection",
 			"GET /api/cache/stats":    "Cache performance statistics",
@@ -329,8 +342,8 @@ func (s *Server) handleInfo(w http.ResponseWriter, r *http.Request) {
 
 	info := map[string]interface{}{
 		"service":     "GoCommender",
-		"version":     "1.0.0",
 		"description": "AI-powered music discovery backend",
+		"build":       s.buildInfo,
 		"features": []string{
 			"Plex playlist analysis",
 			"LLM-based recommendations",

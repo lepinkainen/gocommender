@@ -8,6 +8,23 @@ import (
 	"testing"
 )
 
+// createTestServer creates a Server instance with test buildInfo for testing
+func createTestServer() *Server {
+	buildInfo := &BuildInfo{
+		Version:   "test",
+		Commit:    "test-commit",
+		BuildDate: "test-date",
+		GoVersion: "go1.24.5",
+		Platform:  "test/amd64",
+	}
+	server := &Server{
+		mux:       http.NewServeMux(),
+		buildInfo: buildInfo,
+	}
+	server.setupRoutes()
+	return server
+}
+
 func TestValidateMBID(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -82,11 +99,7 @@ func TestWriteErrorResponse(t *testing.T) {
 }
 
 func TestHandleRoot(t *testing.T) {
-	// Create test server with minimal dependencies
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
-	server.setupRoutes()
+	server := createTestServer()
 
 	req := httptest.NewRequest("GET", "/", nil)
 	w := httptest.NewRecorder()
@@ -108,10 +121,7 @@ func TestHandleRoot(t *testing.T) {
 }
 
 func TestHandleInfo(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
-	server.setupRoutes()
+	server := createTestServer()
 
 	req := httptest.NewRequest("GET", "/api/info", nil)
 	w := httptest.NewRecorder()
@@ -138,10 +148,7 @@ func TestHandleInfo(t *testing.T) {
 }
 
 func TestHandleRecommendMethodNotAllowed(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
-	server.setupRoutes()
+	server := createTestServer()
 
 	req := httptest.NewRequest("GET", "/api/recommend", nil)
 	w := httptest.NewRecorder()
@@ -154,10 +161,7 @@ func TestHandleRecommendMethodNotAllowed(t *testing.T) {
 }
 
 func TestHandleRecommendInvalidJSON(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
-	server.setupRoutes()
+	server := createTestServer()
 
 	req := httptest.NewRequest("POST", "/api/recommend", bytes.NewBufferString("invalid json"))
 	w := httptest.NewRecorder()
@@ -170,10 +174,7 @@ func TestHandleRecommendInvalidJSON(t *testing.T) {
 }
 
 func TestHandleRecommendMissingPlaylistName(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
-	server.setupRoutes()
+	server := createTestServer()
 
 	requestBody := map[string]interface{}{
 		"max_results": 5,
@@ -201,10 +202,7 @@ func TestHandleRecommendMissingPlaylistName(t *testing.T) {
 }
 
 func TestHandleArtistInvalidMBID(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
-	server.setupRoutes()
+	server := createTestServer()
 
 	req := httptest.NewRequest("GET", "/api/artists/invalid-mbid", nil)
 	w := httptest.NewRecorder()
@@ -217,10 +215,7 @@ func TestHandleArtistInvalidMBID(t *testing.T) {
 }
 
 func TestHandleArtistMissingMBID(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
-	server.setupRoutes()
+	server := createTestServer()
 
 	req := httptest.NewRequest("GET", "/api/artists/", nil)
 	w := httptest.NewRecorder()
@@ -233,9 +228,7 @@ func TestHandleArtistMissingMBID(t *testing.T) {
 }
 
 func TestCorsMiddleware(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
+	server := createTestServer()
 
 	// Create a test handler
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -261,9 +254,7 @@ func TestCorsMiddleware(t *testing.T) {
 }
 
 func TestCorsPreflightRequest(t *testing.T) {
-	server := &Server{
-		mux: http.NewServeMux(),
-	}
+	server := createTestServer()
 
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
