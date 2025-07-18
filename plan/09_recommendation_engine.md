@@ -6,7 +6,8 @@ Implement the core recommendation workflow that orchestrates all services to gen
 ## Steps
 
 ### 1. Create Recommendation Service
-Define `internal/services/recommendation.go`:
+
+- [ ] Define `internal/services/recommendation.go` with orchestration service
 
 ```go
 package services
@@ -63,7 +64,8 @@ func NewRecommendationService(plex *PlexClient, openai *OpenAIClient,
 ```
 
 ### 2. Implement Core Recommendation Workflow
-Create the main recommendation process:
+
+- [ ] Create the main recommendation process with error handling
 
 ```go
 // GenerateRecommendations performs the complete recommendation workflow
@@ -194,7 +196,8 @@ func (s *RecommendationService) getHighRatedTracks(playlistName string) ([]model
 ```
 
 ### 3. Artist Enrichment Process
-Implement parallel artist enrichment:
+
+- [ ] Implement parallel artist enrichment with concurrency control
 
 ```go
 // EnrichmentStats tracks enrichment performance
@@ -304,7 +307,8 @@ func generateRequestID() string {
 ```
 
 ### 4. Recommendation Filtering and Ranking
-Add advanced filtering logic:
+
+- [ ] Add advanced filtering logic and scoring algorithms
 
 ```go
 // FilterRecommendations applies additional filtering rules
@@ -478,27 +482,27 @@ func calculateGenreOverlap(artistGenres []string, seedGenres []string) float64 {
 
 ## Verification Steps
 
-1. **End-to-End Workflow**:
+- [ ] **End-to-End Workflow**:
    ```bash
    go test ./internal/services -run TestRecommendationWorkflow
    ```
 
-2. **Performance Testing**:
+- [ ] **Performance Testing**:
    ```bash
    go run ./cmd/test-recommendations -playlist="My Playlist" -genre="rock" -count=5
    ```
 
-3. **Error Handling**:
+- [ ] **Error Handling**:
    ```bash
    go test ./internal/services -run TestRecommendationErrors
    ```
 
-4. **Filtering Logic**:
+- [ ] **Filtering Logic**:
    ```bash
    go test ./internal/services -run TestRecommendationFiltering
    ```
 
-5. **Ranking Algorithm**:
+- [ ] **Ranking Algorithm**:
    ```bash
    go test ./internal/services -run TestRecommendationRanking
    ```

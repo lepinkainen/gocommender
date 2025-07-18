@@ -6,7 +6,8 @@ Set up CI/CD pipeline, containerization, and deployment configurations following
 ## Steps
 
 ### 1. GitHub Actions CI/CD Pipeline
-Create `.github/workflows/ci.yml`:
+
+- [ ] Create `.github/workflows/ci.yml` with comprehensive CI/CD pipeline
 
 ```yaml
 name: CI
@@ -132,7 +133,8 @@ jobs:
 ```
 
 ### 2. Docker Configuration
-Create `Dockerfile`:
+
+- [ ] Create `Dockerfile` with multi-stage build and security best practices
 
 ```dockerfile
 # Build stage
@@ -193,7 +195,8 @@ CMD ["./gocommender"]
 ```
 
 ### 3. Docker Compose for Development
-Create `docker-compose.yml`:
+
+- [ ] Create `docker-compose.yml` for local development and testing
 
 ```yaml
 version: '3.8'
@@ -243,7 +246,8 @@ volumes:
 ```
 
 ### 4. Kubernetes Deployment
-Create `k8s/deployment.yaml`:
+
+- [ ] Create `k8s/deployment.yaml` with production-ready Kubernetes manifests
 
 ```yaml
 apiVersion: apps/v1
@@ -381,7 +385,8 @@ spec:
 ```
 
 ### 5. Environment Configuration
-Create multiple environment files:
+
+- [ ] Create multiple environment files for different deployment stages
 
 `environments/.env.development`:
 ```env
@@ -429,7 +434,8 @@ CACHE_TTL_FAILURE=168h
 ```
 
 ### 6. Monitoring and Observability
-Create `monitoring/prometheus.yml`:
+
+- [ ] Create `monitoring/prometheus.yml` and add metrics endpoint
 
 ```yaml
 global:
@@ -488,7 +494,8 @@ gocommender_cache_expired_entries %d
 ```
 
 ### 7. Deployment Scripts
-Create `scripts/deploy.sh`:
+
+- [ ] Create `scripts/deploy.sh` for automated deployment
 
 ```bash
 #!/bin/bash
@@ -568,7 +575,8 @@ echo "Deployment complete!"
 ```
 
 ### 8. Health Check Script
-Create `scripts/health-check.sh`:
+
+- [ ] Create `scripts/health-check.sh` for post-deployment validation
 
 ```bash
 #!/bin/bash
@@ -622,31 +630,31 @@ echo "Health checks completed successfully!"
 
 ## Verification Steps
 
-1. **Local Build**:
+- [ ] **Local Build**:
    ```bash
    task build
    ./build/gocommender -config-test
    ```
 
-2. **Docker Build**:
+- [ ] **Docker Build**:
    ```bash
    docker build -t gocommender:local .
    docker run -p 8080:8080 gocommender:local
    ```
 
-3. **Docker Compose**:
+- [ ] **Docker Compose**:
    ```bash
    docker-compose up -d
    curl http://localhost:8080/api/health
    ```
 
-4. **Deployment Script**:
+- [ ] **Deployment Script**:
    ```bash
    chmod +x scripts/deploy.sh scripts/health-check.sh
    ./scripts/deploy.sh development
    ```
 
-5. **CI Pipeline**:
+- [ ] **CI Pipeline**:
    ```bash
    # Triggered automatically on git push
    git add .

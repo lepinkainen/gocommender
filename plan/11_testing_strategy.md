@@ -6,7 +6,8 @@ Implement comprehensive testing strategy covering unit tests, integration tests,
 ## Steps
 
 ### 1. Testing Structure and Organization
-Create test organization following Go conventions:
+
+- [ ] Create test organization following Go conventions
 
 ```
 internal/
@@ -32,7 +33,8 @@ internal/
 ```
 
 ### 2. Test Utilities and Fixtures
-Define `internal/testutil/fixtures.go`:
+
+- [ ] Define `internal/testutil/fixtures.go` with test data helpers
 
 ```go
 package testutil
@@ -108,7 +110,8 @@ func stringPtr(s string) *string {
 ```
 
 ### 3. Mock Services
-Create `internal/testutil/mocks.go`:
+
+- [ ] Create `internal/testutil/mocks.go` with service mocks
 
 ```go
 package testutil
@@ -255,7 +258,8 @@ func (m *MockPlexClient) SetError(shouldErr bool) {
 ```
 
 ### 4. Unit Tests for Core Components
-Create comprehensive unit tests starting with `internal/models/artist_test.go`:
+
+- [ ] Create comprehensive unit tests starting with `internal/models/artist_test.go`
 
 ```go
 package models
@@ -339,7 +343,8 @@ func TestVerificationMapDatabaseOperations(t *testing.T) {
 ```
 
 ### 5. Service Layer Tests
-Create `internal/services/cache_test.go`:
+
+- [ ] Create `internal/services/cache_test.go` and other service tests
 
 ```go
 package services
@@ -453,7 +458,8 @@ func createTestDB(t *testing.T) (*sql.DB, func()) {
 ```
 
 ### 6. Integration Tests
-Create `internal/services/recommendation_test.go`:
+
+- [ ] Create `internal/services/recommendation_test.go` for end-to-end testing
 
 ```go
 package services
@@ -515,7 +521,8 @@ func TestRecommendationServiceIntegration(t *testing.T) {
 ```
 
 ### 7. API Tests
-Create `internal/api/router_test.go`:
+
+- [ ] Create `internal/api/router_test.go` for HTTP endpoint testing
 
 ```go
 package api
@@ -635,7 +642,8 @@ func TestRecommendEndpoint(t *testing.T) {
 ```
 
 ### 8. Test Configuration
-Update `Taskfile.yml` to include proper test commands:
+
+- [ ] Update `Taskfile.yml` to include proper test commands
 
 ```yaml
 test:
@@ -667,27 +675,27 @@ benchmark:
 
 ## Verification Steps
 
-1. **Unit Tests**:
+- [ ] **Unit Tests**:
    ```bash
    task test
    ```
 
-2. **Integration Tests**:
+- [ ] **Integration Tests**:
    ```bash
    task test-integration
    ```
 
-3. **Coverage Report**:
+- [ ] **Coverage Report**:
    ```bash
    task test-coverage
    ```
 
-4. **CI Tests**:
+- [ ] **CI Tests**:
    ```bash
    task test-ci
    ```
 
-5. **Benchmarks**:
+- [ ] **Benchmarks**:
    ```bash
    task benchmark
    ```

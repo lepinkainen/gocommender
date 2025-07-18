@@ -6,7 +6,8 @@ Implement REST API endpoints using standard net/http library following llm-share
 ## Steps
 
 ### 1. Create API Router Structure
-Define `internal/api/router.go`:
+
+- [ ] Define `internal/api/router.go` with HTTP server and routes
 
 ```go
 package api
@@ -79,7 +80,8 @@ func (s *Server) setupRoutes() {
 ```
 
 ### 2. Implement Core API Handlers
-Create main endpoint handlers:
+
+- [ ] Create main endpoint handlers for health, recommendations, and artist lookup
 
 ```go
 // handleHealth provides service health information
@@ -248,7 +250,8 @@ func (s *Server) handlePlexTest(w http.ResponseWriter, r *http.Request) {
 ```
 
 ### 3. Cache Management Endpoints
-Implement cache control endpoints:
+
+- [ ] Implement cache control endpoints for stats and clearing
 
 ```go
 // handleCacheStats returns cache performance statistics
@@ -361,7 +364,8 @@ func (s *Server) handleInfo(w http.ResponseWriter, r *http.Request) {
 ```
 
 ### 4. Middleware Implementation
-Create request processing middleware:
+
+- [ ] Create request processing middleware for CORS and logging
 
 ```go
 // corsMiddleware adds CORS headers for web UI compatibility
@@ -410,7 +414,8 @@ func (rw *responseWriter) WriteHeader(code int) {
 ```
 
 ### 5. Utility Functions
-Implement helper functions:
+
+- [ ] Implement helper functions for JSON responses and validation
 
 ```go
 // writeJSONResponse writes a JSON response with proper headers
@@ -469,7 +474,8 @@ func extractPathParam(path, prefix string) string {
 ```
 
 ### 6. Server Integration
-Update main.go to use the new API:
+
+- [ ] Update main.go to use the new API server
 
 ```go
 // Update cmd/server/main.go to integrate the API server
@@ -500,30 +506,30 @@ func main() {
 
 ## Verification Steps
 
-1. **API Health Check**:
+- [ ] **API Health Check**:
    ```bash
    curl http://localhost:8080/api/health
    ```
 
-2. **Recommendation Endpoint**:
+- [ ] **Recommendation Endpoint**:
    ```bash
    curl -X POST http://localhost:8080/api/recommend \
      -H "Content-Type: application/json" \
      -d '{"playlist_name":"My Playlist","max_results":3}'
    ```
 
-3. **Artist Lookup**:
+- [ ] **Artist Lookup**:
    ```bash
    curl http://localhost:8080/api/artists/b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d
    ```
 
-4. **Plex Integration**:
+- [ ] **Plex Integration**:
    ```bash
    curl http://localhost:8080/api/plex/playlists
    curl http://localhost:8080/api/plex/test
    ```
 
-5. **Cache Management**:
+- [ ] **Cache Management**:
    ```bash
    curl http://localhost:8080/api/cache/stats
    curl -X POST http://localhost:8080/api/cache/clear?type=expired

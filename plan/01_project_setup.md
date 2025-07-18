@@ -8,11 +8,15 @@ Initialize the GoCommender project with proper Go structure following llm-shared
 
 ### 1. Initialize Go Module
 
+- [x] Initialize Go module with `go mod init gocommender`
+
 ```bash
 go mod init gocommender
 ```
 
 ### 2. Create Standard Go Project Structure
+
+- [x] Create directory structure following llm-shared guidelines
 
 Following llm-shared/examples/go-project.doc-validator.yml:
 
@@ -36,6 +40,8 @@ gocommender/
 
 ### 3. Create Taskfile.yml
 
+- [x] Create Taskfile.yml with required tasks per llm-shared guidelines
+
 Must include required tasks per llm-shared guidelines:
 
 - build
@@ -49,11 +55,13 @@ Build tasks depend on test and lint. All artifacts go to `build/` directory.
 
 ### 4. Initialize Basic Files
 
-- `.gitignore` for Go projects
-- `.env.example` with required environment variables
-- Basic `README.md`
+- [ ] Create `.gitignore` for Go projects
+- [ ] Create `.env.example` with required environment variables
+- [x] Create basic `README.md`
 
 ### 5. Set Up Minimal Dependencies
+
+- [x] Add essential dependencies to go.mod
 
 Initial go.mod should include only essential dependencies:
 
@@ -62,20 +70,20 @@ Initial go.mod should include only essential dependencies:
 
 ## Verification Steps
 
-1. **Structure Check**: All required directories exist
+- [ ] **Structure Check**: All required directories exist
 
    ```bash
    ls -la cmd/ internal/ pkg/ build/ plan/
    ```
 
-2. **Go Module Validation**:
+- [ ] **Go Module Validation**:
 
    ```bash
    go mod tidy
    go mod verify
    ```
 
-3. **Task Runner**:
+- [ ] **Task Runner**:
 
    ```bash
    task build
@@ -83,7 +91,7 @@ Initial go.mod should include only essential dependencies:
 
    Should succeed and create binary in `build/` directory
 
-4. **Git Integration**:
+- [ ] **Git Integration**:
 
    ```bash
    git status

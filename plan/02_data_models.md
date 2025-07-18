@@ -8,7 +8,7 @@ Define the core data structures with MusicBrainz ID as primary key and create th
 
 ### 1. Define Artist Data Model
 
-Create `internal/models/artist.go` with comprehensive artist information:
+- [x] Create `internal/models/artist.go` with comprehensive artist information
 
 ```go
 package models
@@ -49,7 +49,7 @@ type ExternalURLs struct {
 
 ### 2. Implement JSON Serialization for Custom Types
 
-Add Value/Scan methods for database compatibility:
+- [x] Add Value/Scan methods for database compatibility
 
 ```go
 // VerificationMap database methods
@@ -70,7 +70,7 @@ func (v *VerificationMap) Scan(value interface{}) error {
 
 ### 3. Create Database Schema
 
-Define `internal/models/schema.sql`:
+- [x] Define `internal/models/schema.sql` with artist table structure
 
 ```sql
 CREATE TABLE IF NOT EXISTS artists (
@@ -97,7 +97,7 @@ CREATE INDEX IF NOT EXISTS idx_verified ON artists(verified_json);
 
 ### 4. Create Recommendation Models
 
-Define request/response structures in `internal/models/recommendation.go`:
+- [x] Define request/response structures in `internal/models/recommendation.go`
 
 ```go
 // RecommendRequest represents the API request for recommendations
@@ -129,7 +129,7 @@ type RecommendMetadata struct {
 
 ### 5. Create Plex Models
 
-Define Plex API structures in `internal/models/plex.go`:
+- [x] Define Plex API structures in `internal/models/plex.go`
 
 ```go
 // PlexTrack represents a track from Plex playlist
@@ -156,13 +156,13 @@ type PlexPlaylist struct {
 
 ## Verification Steps
 
-1. **Model Compilation**:
+- [ ] **Model Compilation**:
 
    ```bash
    go build ./internal/models/...
    ```
 
-2. **JSON Serialization Test**:
+- [ ] **JSON Serialization Test**:
 
    ```go
    // Test that custom types serialize/deserialize correctly
@@ -171,14 +171,14 @@ type PlexPlaylist struct {
    // Should succeed without errors
    ```
 
-3. **Database Schema Validation**:
+- [ ] **Database Schema Validation**:
 
    ```bash
    sqlite3 test.db < internal/models/schema.sql
    # Should create tables without errors
    ```
 
-4. **Type Safety Check**:
+- [ ] **Type Safety Check**:
 
    ```bash
    go vet ./internal/models/...

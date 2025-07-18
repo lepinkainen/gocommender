@@ -8,7 +8,7 @@ Set up automated container publishing to GitHub Container Registry (GHCR) with p
 
 ### 1. GitHub Container Registry Setup
 
-Configure repository settings and permissions:
+- [ ] Configure repository settings and permissions for GHCR
 
 ```bash
 # Enable GitHub Container Registry for the repository
@@ -187,7 +187,7 @@ jobs:
 
 ### 2. Enhanced Dockerfile with Multi-Stage Build
 
-Update `Dockerfile` for optimized container publishing:
+- [ ] Update `Dockerfile` for optimized container publishing with build args
 
 ```dockerfile
 # syntax=docker/dockerfile:1.4
@@ -274,7 +274,7 @@ ENTRYPOINT ["./gocommender"]
 
 ### 3. Version Information in Application
 
-Update `cmd/server/main.go` to include version information:
+- [ ] Update `cmd/server/main.go` to include version information and build details
 
 ```go
 package main
@@ -421,7 +421,7 @@ func infoHandler() http.HandlerFunc {
 
 ### 4. Container Registry Configuration
 
-Create `.github/workflows/cleanup-packages.yml` for package cleanup:
+- [ ] Create `.github/workflows/cleanup-packages.yml` for package cleanup
 
 ```yaml
 name: Cleanup Container Registry
@@ -450,7 +450,7 @@ jobs:
 
 ### 5. Container Usage Documentation
 
-Update `README.md` with container usage:
+- [ ] Update `README.md` with container usage examples
 
 ````markdown
 # GoCommender
@@ -534,7 +534,7 @@ helm install gocommender ./helm/gocommender
 
 ### 6. Release Automation
 
-Create `.github/workflows/release.yml`:
+- [ ] Create `.github/workflows/release.yml` for automated releases
 
 ```yaml
 name: Release
@@ -616,7 +616,7 @@ jobs:
 
 ## Verification Steps
 
-1. **Local Container Build**:
+- [ ] **Local Container Build**:
 
    ```bash
    docker build -t gocommender:local .
@@ -624,7 +624,7 @@ jobs:
    curl http://localhost:8080/api/info
    ```
 
-2. **Push to GHCR (after CI setup)**:
+- [ ] **Push to GHCR (after CI setup)**:
 
    ```bash
    git tag v1.0.0
@@ -632,20 +632,20 @@ jobs:
    # Check GitHub Actions for build status
    ```
 
-3. **Pull and Test Published Image**:
+- [ ] **Pull and Test Published Image**:
 
    ```bash
    docker pull ghcr.io/your-username/gocommender:latest
    docker run -d -p 8080:8080 ghcr.io/your-username/gocommender:latest
    ```
 
-4. **Multi-architecture Verification**:
+- [ ] **Multi-architecture Verification**:
 
    ```bash
    docker manifest inspect ghcr.io/your-username/gocommender:latest
    ```
 
-5. **Security Scan Results**:
+- [ ] **Security Scan Results**:
 
    ```bash
    # Check GitHub Security tab for Trivy scan results

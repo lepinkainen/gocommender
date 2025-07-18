@@ -8,7 +8,7 @@ Implement MusicBrainz API client with proper rate limiting to fetch artist data 
 
 ### 1. Create MusicBrainz Client Structure
 
-Define `internal/services/musicbrainz.go`:
+- [ ] Define `internal/services/musicbrainz.go` with client structure and types
 
 ```go
 package services
@@ -69,7 +69,7 @@ type MusicBrainzGenre struct {
 
 ### 2. Implement Client Methods
 
-Create search and lookup functionality:
+- [ ] Create search and lookup functionality
 
 ```go
 // NewMusicBrainzClient creates a new MusicBrainz API client
@@ -161,7 +161,7 @@ func (c *MusicBrainzClient) GetArtistByMBID(mbid string) (*MusicBrainzArtist, er
 
 ### 3. Data Transformation Functions
 
-Convert MusicBrainz data to internal Artist model:
+- [ ] Convert MusicBrainz data to internal Artist model
 
 ```go
 // ToArtistModel converts MusicBrainz data to internal Artist model
@@ -242,7 +242,7 @@ func removeDuplicates(slice []string) []string {
 
 ### 4. Error Handling and Resilience
 
-Implement robust error handling:
+- [ ] Implement robust error handling with retry logic
 
 ```go
 // Close gracefully shuts down the client
@@ -280,13 +280,13 @@ func RetryWithBackoff(fn func() error, maxRetries int) error {
 
 ## Verification Steps
 
-1. **Client Creation**:
+- [ ] **Client Creation**:
 
    ```bash
    go test ./internal/services -run TestMusicBrainzClient
    ```
 
-2. **Artist Search**:
+- [ ] **Artist Search**:
 
    ```bash
    # Test with a known artist
@@ -294,7 +294,7 @@ func RetryWithBackoff(fn func() error, maxRetries int) error {
    # Should return MBID: b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d
    ```
 
-3. **MBID Lookup**:
+- [ ] **MBID Lookup**:
 
    ```bash
    # Test direct MBID lookup
@@ -302,7 +302,7 @@ func RetryWithBackoff(fn func() error, maxRetries int) error {
    # Should return detailed Beatles information
    ```
 
-4. **Rate Limiting**:
+- [ ] **Rate Limiting**:
 
    ```bash
    # Test multiple rapid requests
@@ -310,7 +310,7 @@ func RetryWithBackoff(fn func() error, maxRetries int) error {
    # Should respect rate limits without errors
    ```
 
-5. **Data Transformation**:
+- [ ] **Data Transformation**:
 
    ```bash
    go test ./internal/services -run TestToArtistModel

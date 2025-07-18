@@ -8,7 +8,7 @@ Implement SQLite-based caching with TTL management, background refresh, and CRUD
 
 ### 1. Create Cache Service Interface
 
-Define `internal/services/cache.go`:
+- [ ] Define `internal/services/cache.go` with cache interface and SQLite implementation
 
 ```go
 package services
@@ -53,7 +53,7 @@ type SQLiteCache struct {
 
 ### 2. Implement Cache Operations
 
-Create core CRUD functionality:
+- [ ] Create core CRUD functionality with TTL management
 
 ```go
 // NewSQLiteCache creates a new SQLite-based cache
@@ -196,7 +196,7 @@ func (c *SQLiteCache) Delete(mbid string) error {
 
 ### 3. Implement Cache Management
 
-Add expiry handling and maintenance:
+- [ ] Add expiry handling and maintenance functions
 
 ```go
 // GetExpired returns all expired cache entries
@@ -318,7 +318,7 @@ func (c *SQLiteCache) Close() error {
 
 ### 4. Background Refresh Worker
 
-Create `internal/services/cache_worker.go`:
+- [ ] Create `internal/services/cache_worker.go` for background cache refresh
 
 ```go
 package services
@@ -434,7 +434,7 @@ func (w *CacheWorker) performRefresh() {
 
 ### 5. Cache-Aware Artist Service
 
-Create `internal/services/artist_service.go`:
+- [ ] Create `internal/services/artist_service.go` with cache integration
 
 ```go
 package services
@@ -529,31 +529,31 @@ func (s *ArtistService) findArtistByName(name string) (*models.Artist, error) {
 
 ## Verification Steps
 
-1. **Cache CRUD Operations**:
+- [ ] **Cache CRUD Operations**:
 
    ```bash
    go test ./internal/services -run TestSQLiteCache
    ```
 
-2. **TTL Management**:
+- [ ] **TTL Management**:
 
    ```bash
    go test ./internal/services -run TestCacheTTL
    ```
 
-3. **Background Refresh**:
+- [ ] **Background Refresh**:
 
    ```bash
    go run ./cmd/test-cache-worker -duration 30s
    ```
 
-4. **Performance Testing**:
+- [ ] **Performance Testing**:
 
    ```bash
    go run ./cmd/cache-benchmark -operations 1000
    ```
 
-5. **Cache Statistics**:
+- [ ] **Cache Statistics**:
 
    ```bash
    go run ./cmd/cache-stats

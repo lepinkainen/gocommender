@@ -8,7 +8,7 @@ Implement Discogs and Last.fm API clients for additional metadata enrichment. Th
 
 ### 1. Create Discogs Client
 
-Define `internal/services/discogs.go`:
+- [ ] Define `internal/services/discogs.go` with client structure
 
 ```go
 package services
@@ -79,7 +79,7 @@ func NewDiscogsClient(token string) *DiscogsClient {
 
 ### 2. Implement Discogs Methods
 
-Add search and enrichment functionality:
+- [ ] Add search and enrichment functionality
 
 ```go
 // SearchArtist searches for artists by name in Discogs
@@ -168,7 +168,7 @@ func (c *DiscogsClient) GetArtistByID(id int) (*DiscogsArtist, error) {
 
 ### 3. Create Last.fm Client
 
-Define `internal/services/lastfm.go`:
+- [ ] Define `internal/services/lastfm.go` with client methods
 
 ```go
 package services
@@ -293,7 +293,7 @@ func (c *LastFMClient) GetArtistInfo(name string) (*LastFMArtist, error) {
 
 ### 4. Data Enrichment Functions
 
-Create enrichment logic in `internal/services/enrichment.go`:
+- [ ] Create enrichment logic in `internal/services/enrichment.go`
 
 ```go
 package services
@@ -471,19 +471,19 @@ func countAlbums(releases []DiscogsRelease) int {
 
 ## Verification Steps
 
-1. **Discogs Integration**:
+- [ ] **Discogs Integration**:
 
    ```bash
    DISCOGS_TOKEN=your_token go test ./internal/services -run TestDiscogsClient
    ```
 
-2. **Last.fm Integration**:
+- [ ] **Last.fm Integration**:
 
    ```bash
    LASTFM_API_KEY=your_key go test ./internal/services -run TestLastFMClient
    ```
 
-3. **Data Enrichment**:
+- [ ] **Data Enrichment**:
 
    ```bash
    # Test combined enrichment
@@ -491,7 +491,7 @@ func countAlbums(releases []DiscogsRelease) int {
    # Should return rich artist data from all sources
    ```
 
-4. **Graceful Degradation**:
+- [ ] **Graceful Degradation**:
 
    ```bash
    # Test without API keys
@@ -499,7 +499,7 @@ func countAlbums(releases []DiscogsRelease) int {
    # Should work with MusicBrainz only
    ```
 
-5. **Rate Limiting**:
+- [ ] **Rate Limiting**:
 
    ```bash
    go run ./cmd/stress-test-apis

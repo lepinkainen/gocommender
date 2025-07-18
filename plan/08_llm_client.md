@@ -6,7 +6,8 @@ Implement OpenAI API client for generating artist recommendations based on seed 
 ## Steps
 
 ### 1. Create OpenAI Client Structure
-Define `internal/services/openai.go`:
+
+- [ ] Define `internal/services/openai.go` with client and request/response types
 
 ```go
 package services
@@ -92,7 +93,8 @@ type ArtistSuggestions struct {
 ```
 
 ### 2. Implement Client Methods
-Create core OpenAI API functionality:
+
+- [ ] Create core OpenAI API functionality with structured JSON responses
 
 ```go
 // NewOpenAIClient creates a new OpenAI API client
@@ -208,7 +210,8 @@ func (c *OpenAIClient) sendRequest(request OpenAIRequest) (*OpenAIResponse, erro
 ```
 
 ### 3. Prompt Engineering
-Create sophisticated prompt building:
+
+- [ ] Create sophisticated prompt building with exclusion lists
 
 ```go
 // buildRecommendationPrompt constructs the LLM prompt for artist recommendations
@@ -334,7 +337,8 @@ func contains(slice []string, item string) bool {
 ```
 
 ### 4. Response Validation and Filtering
-Implement robust validation:
+
+- [ ] Implement robust validation and filtering of LLM responses
 
 ```go
 // validateSuggestions ensures LLM response meets requirements
@@ -471,27 +475,27 @@ func calculateSimilarity(a, b string) float64 {
 
 ## Verification Steps
 
-1. **API Connection**:
+- [ ] **API Connection**:
    ```bash
    OPENAI_API_KEY=your_key go test ./internal/services -run TestOpenAIClient
    ```
 
-2. **Prompt Generation**:
+- [ ] **Prompt Generation**:
    ```bash
    go test ./internal/services -run TestPromptBuilding
    ```
 
-3. **JSON Response Parsing**:
+- [ ] **JSON Response Parsing**:
    ```bash
    go test ./internal/services -run TestResponseParsing
    ```
 
-4. **Artist Filtering**:
+- [ ] **Artist Filtering**:
    ```bash
    go test ./internal/services -run TestArtistFiltering
    ```
 
-5. **End-to-End Recommendation**:
+- [ ] **End-to-End Recommendation**:
    ```bash
    go run ./cmd/test-llm -tracks="test_tracks.json" -known="test_artists.json"
    ```

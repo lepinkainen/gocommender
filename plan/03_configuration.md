@@ -8,7 +8,7 @@ Implement configuration management using github.com/spf13/viper following llm-sh
 
 ### 1. Create Configuration Structure
 
-Define `internal/config/config.go` with all required configuration:
+- [x] Define `internal/config/config.go` with all required configuration
 
 ```go
 package config
@@ -66,7 +66,7 @@ type CacheConfig struct {
 
 ### 2. Implement Configuration Loading
 
-Create configuration loader with validation:
+- [x] Create configuration loader with validation
 
 ```go
 // Load loads configuration from environment variables and files
@@ -106,7 +106,7 @@ func Load() (*Config, error) {
 
 ### 3. Environment Variable Mapping
 
-Map environment variables to config structure:
+- [x] Map environment variables to config structure
 
 ```go
 func setDefaults() {
@@ -140,7 +140,7 @@ func setDefaults() {
 
 ### 4. Configuration Validation
 
-Implement validation for required fields:
+- [x] Implement validation for required fields
 
 ```go
 func validate(config *Config) error {
@@ -177,7 +177,7 @@ func isValidURL(str string) bool {
 
 ### 5. Database Initialization
 
-Create database setup function in `internal/config/database.go`:
+- [x] Create database setup function in `internal/config/database.go`
 
 ```go
 package config
@@ -227,7 +227,7 @@ func createSchema(db *sql.DB) error {
 
 ## Verification Steps
 
-1. **Configuration Loading**:
+- [ ] **Configuration Loading**:
 
    ```bash
    # Create test .env file
@@ -239,21 +239,21 @@ func createSchema(db *sql.DB) error {
    GOCOMMENDER_ENV_FILE=.env.test go run ./cmd/server -config-test
    ```
 
-2. **Environment Variable Mapping**:
+- [ ] **Environment Variable Mapping**:
 
    ```bash
    # Test environment variable override
    PLEX_URL=http://override.local go run ./cmd/server -config-test
    ```
 
-3. **Validation Testing**:
+- [ ] **Validation Testing**:
 
    ```bash
    # Test missing required config
    go run ./cmd/server -config-test  # Should fail with validation errors
    ```
 
-4. **Database Initialization**:
+- [ ] **Database Initialization**:
 
    ```bash
    # Test database creation

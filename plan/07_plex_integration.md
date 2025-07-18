@@ -6,7 +6,8 @@ Implement Plex API client for fetching playlist tracks and library artists. Sinc
 ## Steps
 
 ### 1. Create Plex Client Structure
-Define `internal/services/plex.go`:
+
+- [ ] Define `internal/services/plex.go` with XML structures and client
 
 ```go
 package services
@@ -75,7 +76,8 @@ type PlexPlaylistXML struct {
 ```
 
 ### 2. Implement Client Methods
-Create core Plex API functionality:
+
+- [ ] Create core Plex API functionality for playlists and tracks
 
 ```go
 // NewPlexClient creates a new Plex API client
@@ -210,7 +212,8 @@ func (c *PlexClient) GetAllArtists() ([]string, error) {
 ```
 
 ### 3. Helper Methods
-Implement utility functions for Plex API navigation:
+
+- [ ] Implement utility functions for Plex API navigation
 
 ```go
 // findPlaylistKey searches for a playlist by name and returns its key
@@ -292,7 +295,8 @@ func (c *PlexClient) TestConnection() error {
 ```
 
 ### 4. Filtering and Processing
-Create high-rated track filtering:
+
+- [ ] Create high-rated track filtering and genre support
 
 ```go
 // GetHighRatedTracks retrieves tracks with high user ratings from a playlist
@@ -380,7 +384,8 @@ func (c *PlexClient) GetServerInfo() (map[string]string, error) {
 ```
 
 ### 5. Error Handling and Validation
-Implement robust error handling:
+
+- [ ] Implement robust error handling with custom error types
 
 ```go
 // PlexError represents specific Plex API errors
@@ -446,30 +451,30 @@ func (c *PlexClient) validatePlexResponse(resp *http.Response, requestURL string
 
 ## Verification Steps
 
-1. **Connection Test**:
+- [ ] **Connection Test**:
    ```bash
    PLEX_URL=http://localhost:32400 PLEX_TOKEN=your_token go test ./internal/services -run TestPlexConnection
    ```
 
-2. **Playlist Retrieval**:
+- [ ] **Playlist Retrieval**:
    ```bash
    go run ./cmd/test-plex -operation=playlists
    # Should list all available playlists
    ```
 
-3. **Track Extraction**:
+- [ ] **Track Extraction**:
    ```bash
    go run ./cmd/test-plex -operation=tracks -playlist="My Playlist"
    # Should return tracks with metadata
    ```
 
-4. **Artist Library**:
+- [ ] **Artist Library**:
    ```bash
    go run ./cmd/test-plex -operation=artists
    # Should return all library artists
    ```
 
-5. **High-Rated Filter**:
+- [ ] **High-Rated Filter**:
    ```bash
    go run ./cmd/test-plex -operation=rated -playlist="My Playlist" -min-rating=8
    # Should return only highly rated tracks
