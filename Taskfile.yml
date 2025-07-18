@@ -1,0 +1,55 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build the server binary
+    deps:
+      - test
+      - lint
+    cmds:
+      - go build -o build/gocommender ./cmd/server
+
+  build-linux:
+    desc: Build for Linux
+    deps:
+      - test
+      - lint
+    env:
+      GOOS: linux
+      GOARCH: amd64
+    cmds:
+      - go build -o build/gocommender-linux ./cmd/server
+
+  build-ci:
+    desc: Build for CI environment
+    deps:
+      - test-ci
+      - lint
+    cmds:
+      - go build -o build/gocommender-ci ./cmd/server
+
+  test:
+    desc: Run tests
+    cmds:
+      - go test -v ./...
+
+  test-ci:
+    desc: Run tests with CI tags and coverage
+    cmds:
+      - go test -tags=ci -cover -v ./...
+
+  lint:
+    desc: Run linter
+    cmds:
+      - go fmt ./...
+      - go vet ./...
+
+  clean:
+    desc: Clean build artifacts
+    cmds:
+      - rm -rf build/*
+
+  dev:
+    desc: Run development server
+    cmds:
+      - go run ./cmd/server
