@@ -43,3 +43,7 @@ build/
 
 # Data directory (contains database files)
 data/
+
+# Frontend build artifacts
+web/node_modules/
+web/dist/

@@ -77,8 +77,34 @@ tasks:
     desc: Clean build artifacts
     cmds:
       - rm -rf build/*
+      - cd web && npm run clean
 
   dev:
     desc: Run development server
     cmds:
       - go run ./cmd/server
+
+  frontend-dev:
+    desc: Run frontend development server
+    dir: web
+    cmds:
+      - npm run dev
+
+  frontend-build:
+    desc: Build frontend for production
+    dir: web
+    cmds:
+      - npm install
+      - npm run build
+
+  frontend-type-check:
+    desc: Check TypeScript types in frontend
+    dir: web
+    cmds:
+      - npm run type-check
+
+  build-all:
+    desc: Build both backend and frontend
+    deps:
+      - build
+      - frontend-build
