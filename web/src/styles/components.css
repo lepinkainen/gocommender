@@ -490,7 +490,13 @@
   
   .card-title,
   .form-label,
-  .artist-name {
+  .artist-name,
+  .artist-years,
+  .artist-country,
+  .artist-albums,
+  .artist-description,
+  .genres-label,
+  .stats-text {
     color: #f7fafc;
   }
   
