@@ -9,10 +9,15 @@ import (
 
 // CreateTestDB creates an in-memory SQLite database for testing
 func CreateTestDB(t *testing.T) (*sql.DB, func()) {
-	db, err := sql.Open("sqlite", ":memory:")
+	// Use shared cache in-memory database for concurrent access
+	db, err := sql.Open("sqlite", ":memory:?cache=shared")
 	if err != nil {
 		t.Fatalf("Failed to create test database: %v", err)
 	}
+
+	// Set connection pool to use single connection to avoid race conditions
+	db.SetMaxOpenConns(1)
+	db.SetMaxIdleConns(1)
 
 	// Create schema
 	schema := `
