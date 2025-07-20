@@ -76,10 +76,13 @@ func TestCacheManagerIntegration(t *testing.T) {
 	t.Run("Cache expiry logic", func(t *testing.T) {
 		artist := testutil.TestArtistExpired()
 
-		// Manually set cache expiry to past
-		artist.CacheExpiry = time.Now().Add(-time.Hour)
-
+		// First cache the artist normally
 		err := cacheManager.CacheArtist(artist, config)
+		testutil.AssertNoError(t, err)
+
+		// Then manually set cache expiry to past to simulate expiry
+		expiredTime := time.Now().Add(-time.Hour)
+		err = cacheManager.UpdateCacheExpiry(artist.MBID, expiredTime)
 		testutil.AssertNoError(t, err)
 
 		// Should indicate needs fetch due to expiry
@@ -128,9 +131,14 @@ func TestCacheManagerIntegration(t *testing.T) {
 		// Create an artist that's been expired for a long time
 		artist := testutil.TestArtistMinimal()
 		artist.MBID = "cleanup-test-mbid"
-		artist.CacheExpiry = time.Now().Add(-2 * time.Hour) // Expired 2 hours ago
 
+		// First cache the artist normally
 		err := cacheManager.CacheArtist(artist, config)
+		testutil.AssertNoError(t, err)
+
+		// Then manually set cache expiry to past to simulate long expiry
+		expiredTime := time.Now().Add(-2 * time.Hour) // Expired 2 hours ago
+		err = cacheManager.UpdateCacheExpiry(artist.MBID, expiredTime)
 		testutil.AssertNoError(t, err)
 
 		// Cleanup entries that have been expired for more than 1 hour
@@ -141,7 +149,10 @@ func TestCacheManagerIntegration(t *testing.T) {
 		// Verify the artist was deleted
 		retrieved, needsFetch, err := cacheManager.GetOrFetchArtist(artist.MBID)
 		testutil.AssertNoError(t, err)
-		testutil.AssertNil(t, retrieved)
+		if retrieved != nil {
+			t.Errorf("Expected artist to be deleted, but found: MBID=%s, Name=%s, CacheExpiry=%v",
+				retrieved.MBID, retrieved.Name, retrieved.CacheExpiry)
+		}
 		testutil.AssertTrue(t, needsFetch)
 	})
 }
