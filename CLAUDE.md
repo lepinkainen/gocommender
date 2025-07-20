@@ -35,9 +35,30 @@ All external clients follow the **rate-limited client pattern** (see `internal/s
 ### 3. Configuration Management
 
 Uses Viper with **environment variable precedence**:
-- `GOCOMMENDER_*` prefix for all env vars
+- Supports both `GOCOMMENDER_*` prefixed and standard env vars (e.g., both `PLEX_URL` and `GOCOMMENDER_PLEX_URL` work)
+- Standard format (used in examples): `PLEX_URL`, `PLEX_TOKEN`, `OPENAI_API_KEY`
 - Required validation: `PLEX_URL`, `PLEX_TOKEN`, `OPENAI_API_KEY`
 - Optional APIs gracefully degrade when tokens missing
+
+### 4. Frontend Architecture Pattern
+
+The TypeScript frontend follows a **component-based architecture** with functional patterns:
+
+```typescript
+// All components export factory functions returning HTMLElement
+export function createArtistCard(artist: Artist): HTMLElement
+export function createRecommendationForm(onSubmit: SubmitHandler): HTMLElement
+
+// Type-safe API client with error handling
+const api = new ApiClient('/api')
+const result = await api.recommend({ playlist: 'Favorites', count: 5 })
+
+// State management with localStorage persistence
+const state = createStateManager('gocommender-state')
+state.set('selectedPlaylist', playlist)
+```
+
+This pattern enables DOM manipulation without React/Vue frameworks while maintaining type safety.
 
 ## Development Workflow
 
@@ -49,9 +70,13 @@ task build                    # Runs test + lint + build
 gofmt -w .                    # Auto-format after code changes
 
 # Development
-task dev                      # Run development server
+task dev                      # Run backend development server
+task frontend-dev             # Run frontend with hot-reload (in separate terminal)
 task test                     # Unit tests only
 task test-ci                  # Tests with coverage for CI
+
+# Full-stack development
+task build-all                # Build both backend and frontend
 
 # Server modes for debugging
 ./build/gocommender -config-test    # Test config loading
@@ -63,20 +88,23 @@ go run llm-shared/utils/gofuncs/gofuncs.go -dir .  # Function analysis
 
 ### Project Structure Logic
 
-```
+```text
 cmd/server/          # HTTP entry point with flag-based modes (-config-test, -init-db-only)
+cmd/test-recommendations/  # End-to-end testing CLI tool
 internal/models/     # Core data structures with SQL compatibility
 internal/config/     # Viper-based config + database initialization
 internal/services/   # External API clients + business logic
-internal/api/        # HTTP handlers (Step 10 in progress)
-plan/               # Implementation roadmap with checkboxes
+internal/api/        # HTTP handlers with CORS and middleware
+internal/db/         # Database operations (artist.go, cache.go, refresh.go)
+web/                 # TypeScript frontend with Vite build system
+backlog/            # Implementation roadmap with completed checkboxes
 ```
 
-## Implementation Progress (from plan/)
+## Implementation Progress (from backlog/)
 
-✅ **Complete**: Steps 1-9 (Data models, APIs, caching, Plex integration, LLM client, recommendation engine)  
-🚧 **Current**: Step 10 (HTTP API endpoints)  
-📋 **Next**: Steps 11-13 (Testing, deployment, containerization)
+✅ **Complete**: Steps 1-13 (All backend services, HTTP API, testing, deployment, containerization)  
+✅ **Complete**: Step 14 (Frontend implementation with TypeScript + Vite)  
+🎉 **Status**: Project is production-ready and fully functional end-to-end
 
 ## End-to-End Testing Available
 
@@ -92,23 +120,30 @@ export OPENAI_API_KEY="your-openai-key"
 export DISCOGS_TOKEN="your-discogs-token"
 export LASTFM_API_KEY="your-lastfm-key"
 
-# Run end-to-end test
+# Run end-to-end test (first build the CLI tool)
+task build
 ./build/test-recommendations -playlist="My Favorites" -count=3 -verbose
+
+# Or test the web frontend
+task frontend-build && task dev  # Backend at :8080, frontend at :5173
 ```
 
 ## Key Technical Decisions
 
 ### Database Strategy
+
 - **SQLite with modernc.org/sqlite** (CGO-free for deployment simplicity)
 - **JSON columns** for complex types (verification status, genres, external URLs)
 - **MBID as primary key** ensures data consistency across API sources
 
 ### Error Handling Philosophy
+
 - **Graceful degradation**: Optional APIs (Discogs, Last.fm) fail silently
 - **Retry logic**: Only for rate-limit errors, not data errors
 - **Validation upfront**: Config validation prevents runtime failures
 
 ### External Dependencies
+
 - **Minimal approach**: Standard library preferred (following llm-shared guidelines)
 - **Viper for config**: Industry standard with env var support
 - **Rate limiting**: Custom implementation to respect API limits
@@ -136,3 +171,7 @@ export LASTFM_API_KEY="your-lastfm-key"
 7. **User-Agent headers**: All external API clients use "GoCommender/1.0" format for compliance
 8. **Cache TTL strategy**: 30 days for verified artists, 7 days for failed lookups
 9. **Build dependency**: `task build` must succeed before claiming any task complete
+10. **Frontend development**: Use `task frontend-dev` for hot-reload during development
+11. **API endpoints**: Backend runs on :8080, frontend dev server on :5173 (with proxy)
+12. **Database location**: Default SQLite path is `./data/gocommender.db` (configurable via env)
+13. **CORS handling**: API router includes CORS middleware for frontend integration
