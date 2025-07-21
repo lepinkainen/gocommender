@@ -45,6 +45,12 @@ body {
     color: #e2e8f0;
     background: rgba(26, 32, 44, 0.8);
   }
+
+  .loading-text,
+  .validation-message,
+  .text-muted {
+    color: #cbd5e0;
+  }
 }
 
 /* Layout */
@@ -144,7 +150,7 @@ body {
 .loading-text {
   margin-top: 1rem;
   text-align: center;
-  color: #666;
+  color: #4a5568;
   font-style: italic;
 }
 
@@ -200,7 +206,7 @@ body {
 
 /* Validation messages */
 .validation-message {
-  color: #666;
+  color: #4a5568;
   font-size: 0.9rem;
   font-style: italic;
   margin: 0.5rem 0;
@@ -224,7 +230,7 @@ body {
 }
 
 .text-muted {
-  color: #666;
+  color: #4a5568;
 }
 
 .mt-1 { margin-top: 0.5rem; }

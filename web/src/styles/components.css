@@ -221,7 +221,7 @@
 .stats-text {
   margin: 0;
   font-size: 0.875rem;
-  color: #666;
+  color: #4a5568;
   text-align: center;
 }
 
@@ -370,7 +370,7 @@
 .artist-albums {
   margin: 0 0 0.5rem 0;
   font-size: 0.875rem;
-  color: #666;
+  color: #4a5568;
 }
 
 .artist-genres {
@@ -383,7 +383,7 @@
 
 .genres-label {
   font-size: 0.875rem;
-  color: #666;
+  color: #4a5568;
   font-weight: 500;
 }
 
@@ -394,7 +394,7 @@
 .artist-description {
   margin: 1rem 0 0 0;
   font-size: 0.875rem;
-  color: #666;
+  color: #4a5568;
   line-height: 1.5;
 }
 
@@ -497,7 +497,7 @@
   .artist-description,
   .genres-label,
   .stats-text {
-    color: #f7fafc;
+    color: #e2e8f0;
   }
   
   .form-input {
