@@ -140,6 +140,10 @@ export class ArtistGrid {
   }
 
   private addMetadataDisplay(): void {
+    // Remove any existing stats displays to prevent duplicates
+    const existingStats = this.element.querySelectorAll('.grid-stats');
+    existingStats.forEach(stats => stats.remove());
+    
     // This would show processing time, cache hits, etc.
     // For now, just show a simple stats footer
     const statsContainer = createElementWithClasses('div', 'grid-stats');
